@@ -1,2 +1,13 @@
-META-INF\annotations\hudson.Extension.txt
-META-INF\annotations\hudson.Extension
+META-INF/annotations/hudson.Extension.txt
+io/jenkins/plugins/wechat/model/urlData.class
+io/jenkins/plugins/wechat/model/weChatData$NewsBean$ArticlesBean.class
+io/jenkins/plugins/wechat/WeChatNotifier$DescriptorImpl.class
+io/jenkins/plugins/wechat/WeChatNotifier.class
+io/jenkins/plugins/wechat/model/weChatData.class
+io/jenkins/plugins/wechat/WeChatNotifier.stapler
+io/jenkins/plugins/wechat/WeChatHelper.class
+io/jenkins/plugins/wechat/WeChatMessage.class
+META-INF/annotations/org.jenkinsci.Symbol
+io/jenkins/plugins/wechat/WeChatMessage$1.class
+io/jenkins/plugins/wechat/model/weChatData$NewsBean.class
+META-INF/annotations/hudson.Extension

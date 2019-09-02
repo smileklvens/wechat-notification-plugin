@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Built-By: daffo
+Built-By: zhulk
 Created-By: Apache Maven
-Build-Jdk: 1.8.0_211
+Build-Jdk: 1.8.0_192
 Extension-Name: wechat-notification-plugin
 Specification-Title: 企业微信通知插件
 Implementation-Title: wechat-notification-plugin
@@ -10,7 +10,7 @@ Group-Id: io.jenkins.plugins
 Short-Name: wechat-notification-plugin
 Long-Name: wechat-notification-plugin
 Minimum-Java-Version: 1.8
-Plugin-Version: 1.0-SNAPSHOT (private-06/27/2019 11:48-daffo)
+Plugin-Version: 1.0-SNAPSHOT (private-1cd902a5-zhulk)
 Hudson-Version: 2.164.1
 Jenkins-Version: 2.164.1
 Plugin-Dependencies: structs:1.19

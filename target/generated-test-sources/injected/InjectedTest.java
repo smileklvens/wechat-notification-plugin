@@ -8,11 +8,11 @@ public class InjectedTest extends junit.framework.TestCase {
   public static junit.framework.Test suite() throws Exception {
     System.out.println("Running tests for "+"io.jenkins.plugins:wechat-notification-plugin:1.0-SNAPSHOT");
     Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put("basedir","D:\\workspace\\wechat-notification-plugin");
+    parameters.put("basedir","/Users/zhulk/workspace/other/wechat-notification-plugin");
     parameters.put("artifactId","wechat-notification-plugin");
     parameters.put("packaging","hpi");
-    parameters.put("outputDirectory","D:\\workspace\\wechat-notification-plugin\\target\\classes");
-    parameters.put("testOutputDirectory","D:\\workspace\\wechat-notification-plugin\\target\\test-classes");
+    parameters.put("outputDirectory","/Users/zhulk/workspace/other/wechat-notification-plugin/target/classes");
+    parameters.put("testOutputDirectory","/Users/zhulk/workspace/other/wechat-notification-plugin/target/test-classes");
     parameters.put("requirePI","true");
     return org.jvnet.hudson.test.PluginAutomaticTestBuilder.build(parameters);
   }

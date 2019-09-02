@@ -75,21 +75,21 @@ public class WeChatMessage {
     /**
      * 创建微信发送请求post数据，markdown格式
      * 
+     * @param agent_id 应用编号。
      * @param touser   发送到人
      * @param toparty  发送到部门
      * @param totag    发送到组
-     * @param agent_id 应用编号。
-     * @param markdown 格式的内容
+     * @param newsBean 格式的内容
      * @return String
      */
-    protected String createpostdata(int agent_id, String touser, String toparty, String totag, String markdown) {
+    protected String createpostdata(int agent_id, String touser, String toparty, String totag, weChatData.NewsBean newsBean) {
         weChatData wcd = new weChatData();
         wcd.setAgentid(agent_id);
         wcd.setTouser(touser);
         wcd.setToparty(toparty);
         wcd.setTotag(totag);
-        wcd.setText(markdown);
-
+        wcd.setMsgtype("news");
+        wcd.setNews(newsBean);
         return gson.toJson(wcd);
     }
 

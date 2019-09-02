@@ -3,18 +3,19 @@ package io.jenkins.plugins.wechat;
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.FilePath;
+import hudson.model.*;
 import io.jenkins.plugins.wechat.model.urlData;
-import hudson.model.AbstractProject;
-import hudson.model.Run;
-import hudson.model.TaskListener;
 import hudson.tasks.Notifier;
 import hudson.tasks.Publisher;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
 
+import io.jenkins.plugins.wechat.model.weChatData;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import jenkins.tasks.SimpleBuildStep;
@@ -29,11 +30,11 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
     private final String touser;
     private final String toparty;
     private final String totag;
-    private final String markdown;
+    private final String textcontent;
 
     @DataBoundConstructor
     public WeChatNotifier(String corpid, String secret, int agentid, String touser, String toparty, String totag,
-            String markdown) {
+                          String textcontent) {
         this.corpid = corpid;
         this.secret = secret;
         this.agentid = agentid;
@@ -41,7 +42,7 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
         this.touser = touser;
         this.toparty = toparty;
         this.totag = totag;
-        this.markdown = markdown;
+        this.textcontent = textcontent;
     }
 
     public String getCorpid() {
@@ -69,18 +70,35 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
     }
 
     public String getMarkdown() {
-        return markdown;
+        return textcontent;
     }
+
 
     @Override
     public void perform(Run<?, ?> run, FilePath workspace, Launcher launcher, TaskListener listener)
             throws InterruptedException, IOException {
+
+        // check build result
+        Result result = run.getResult();
+        boolean unStable = result != null && result.isWorseThan(Result.UNSTABLE);
+        if (unStable) {
+            listener.getLogger().println("The build " + result.toString() + ", so the news was not send.");
+            return;
+        }
+
+        listener.getLogger().println("**************************************************************************************************");
+        listener.getLogger().println("**************************************************************************************************");
+        listener.getLogger().println("********************************          send weChat        ********************************");
+        listener.getLogger().println("**************************************************************************************************");
+        listener.getLogger().println("**************************************************************************************************");
+
         WeChatMessage sw = new WeChatMessage();
         try {
             WeChatHelper singleton = WeChatHelper.getInstance();
             Map<String, Object> map = singleton.getAccessTokenAndJsapiTicket(corpid, secret);
             String token = (String) map.get("access_token");
-            String postdata = sw.createpostdata(agentid, touser, toparty, totag, markdown);
+
+            String postdata = sw.createpostdata(agentid, touser, toparty, totag, contentInfo(run, listener));
             String resp = sw.post("utf-8", WeChatMessage.CONTENT_TYPE, (new urlData()).getSendMessage_Url(), postdata,
                     token);
             listener.getLogger().println("resp:" + resp);
@@ -89,6 +107,39 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
             e.printStackTrace();
             listener.getLogger().println("err:" + e.getMessage());
         }
+    }
+
+    private weChatData.NewsBean contentInfo(Run<?, ?> run, TaskListener listener) {
+        Map<String, String> envVars = run.getEnvVars();
+        weChatData.NewsBean.ArticlesBean articlesBean = new weChatData.NewsBean.ArticlesBean();
+        articlesBean.setTitle("爱康_Android");
+        if (envVars.containsKey("buildIcon")) {
+            articlesBean.setPicurl(envVars.get("buildIcon"));
+        } else {
+            articlesBean.setPicurl("http://res.mail.qq.com/node/ww/wwopenmng/images/independent/doc/test_pic_msg1.png");
+        }
+        if (envVars.containsKey("appPgyerURL")) {
+            articlesBean.setUrl(envVars.get("appPgyerURL"));
+        } else {
+            articlesBean.setUrl("https://www.pgyer.com/WftB");
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if (envVars.containsKey("buildName")) {
+            stringBuilder.append(envVars.get("buildName"));
+        }
+        if (envVars.containsKey("buildVersion")) {
+            stringBuilder.append("-V").append(envVars.get("buildVersion"));
+        }
+        if (envVars.containsKey("buildUpdated")) {
+            stringBuilder.append("打包时间").append(envVars.get("buildUpdated"));
+        }
+        articlesBean.setDescription(stringBuilder.toString());
+        ArrayList<weChatData.NewsBean.ArticlesBean> arrayList = new ArrayList<>();
+        arrayList.add(articlesBean);
+        weChatData.NewsBean newsBean = new weChatData.NewsBean();
+        newsBean.setArticles(arrayList);
+        listener.getLogger().println(arrayList.get(0).toString());
+        return newsBean;
     }
 
     @Override
@@ -107,7 +158,7 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
 
         @Override
         public String getDisplayName() {
-            return "WeChat Notification Plugin";
+            return "WeChat Notification Plugin2";
         }
     }
 }
