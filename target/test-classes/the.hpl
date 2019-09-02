@@ -3,7 +3,7 @@ Group-Id: io.jenkins.plugins
 Short-Name: wechat-notification-plugin
 Long-Name: wechat-notification-plugin
 Minimum-Java-Version: 1.8
-Plugin-Version: 1.0-SNAPSHOT (private-1cd902a5-zhulk)
+Plugin-Version: 1.0-SNAPSHOT (private-40ae2514-zhulk)
 Hudson-Version: 2.164.1
 Jenkins-Version: 2.164.1
 Plugin-Dependencies: structs:1.19

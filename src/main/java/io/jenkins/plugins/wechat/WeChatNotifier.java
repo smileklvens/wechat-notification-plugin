@@ -30,11 +30,11 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
     private final String touser;
     private final String toparty;
     private final String totag;
-    private final String textcontent;
+    private final String picURL;
 
     @DataBoundConstructor
     public WeChatNotifier(String corpid, String secret, int agentid, String touser, String toparty, String totag,
-                          String textcontent) {
+                          String picURL) {
         this.corpid = corpid;
         this.secret = secret;
         this.agentid = agentid;
@@ -42,7 +42,7 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
         this.touser = touser;
         this.toparty = toparty;
         this.totag = totag;
-        this.textcontent = textcontent;
+        this.picURL = picURL;
     }
 
     public String getCorpid() {
@@ -69,8 +69,8 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
         return totag;
     }
 
-    public String getMarkdown() {
-        return textcontent;
+    public String getPicURL() {
+        return picURL;
     }
 
 
@@ -113,11 +113,7 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
         Map<String, String> envVars = run.getEnvVars();
         weChatData.NewsBean.ArticlesBean articlesBean = new weChatData.NewsBean.ArticlesBean();
         articlesBean.setTitle("爱康_Android");
-        if (envVars.containsKey("buildIcon")) {
-            articlesBean.setPicurl(envVars.get("buildIcon"));
-        } else {
-            articlesBean.setPicurl("http://res.mail.qq.com/node/ww/wwopenmng/images/independent/doc/test_pic_msg1.png");
-        }
+        articlesBean.setPicurl(getPicURL());
         if (envVars.containsKey("appPgyerURL")) {
             articlesBean.setUrl(envVars.get("appPgyerURL"));
         } else {
@@ -158,7 +154,7 @@ public class WeChatNotifier extends Notifier implements SimpleBuildStep {
 
         @Override
         public String getDisplayName() {
-            return "WeChat Notification Plugin2";
+            return "WeChat Notification By zlk";
         }
     }
 }

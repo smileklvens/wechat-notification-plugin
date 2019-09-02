@@ -18,7 +18,7 @@
     <f:entry title="ToTag" field="totag">
         <f:textbox />
     </f:entry>
-    <f:entry title="Text" field="textcontent">
+    <f:entry title="PicURL" field="picURL">
         <f:textbox />
     </f:entry>
 </j:jelly>

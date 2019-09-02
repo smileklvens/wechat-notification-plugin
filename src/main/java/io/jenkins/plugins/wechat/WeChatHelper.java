@@ -53,8 +53,8 @@ public class WeChatHelper {
             String time = map.get("time");// 从缓存中拿数据
             String accessToken = map.get("access_token");// 从缓存中拿数据
             Long nowDate = new Date().getTime();
-            // 这里设置过期时间 5400 * 1000就好了 一个半小时
-            if (accessToken != null && time != null && nowDate - Long.parseLong(time) < 5400 * 1000) {
+            // 这里设置过期时间 5400 * 1000就好了 一个3分钟
+            if (accessToken != null && time != null && nowDate - Long.parseLong(time) < 180 * 1000) {
                 System.out.println("-----从缓存读取access_token：" + accessToken);
                 // 从缓存中拿数据为返回结果赋值
                 result.put("access_token", accessToken);
